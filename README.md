@@ -157,9 +157,73 @@ Asks for properties of the entity class (fields)
 - type (? for available)
 - length (number of characters it can have)
 - null (can it be null, default no)
+
 Add more until done, then input empty line when asks for another "property"
 
+product.php in entity folder now shows our database entries written out as a class. All the properties are private and there are public getter and setter methods. private int id only has a setter. Edit it however you want.
 
+These attributes are used by "doctrine" to generate the code that will write the table in the database.
 
+The code that does this is called a migration. It can can be created using 
+```
+bin/console make:migration
+```
+It creates a file in the /migrations folder, which contains the current timestamp. The file contains a class that uses the migration method called "up" which is written in SQL language. This can be edited but isn't necessary
 
+Run this using (asks for confirmation):
+```
+bin/console doctrine:migrations:migrate
+```
+The tables have now been added along with doctrine_migration_versions, which helps keep track of migrations, and sqlite_sequence for auto-increment fields. Safe to ignore.
+
+Adding another field can be done manually through the Entity class in Product.php, add the attributes and a getter and setter method.
+
+One can also run the Entity generator again, which will edit the Entity class:
+```
+bin/console make:entity product
+```
+
+### Working with the database
+Adding data to the table. Can do this directly with db browser, but symfony also has a tool for this, called fixtures:
+
+With Symfony Flex
+```
+composer require --dev orm-fixtures
+```
+Without:
+```
+composer require --dev doctrine/doctrine-fixtures-bundle
+```
+This creates a folder called DataFixtures in src, which contains a class called AppFixtures.php
+
+Add a use statement for the product entity class:
+```
+use App\Entity\Product;
+```
+Then add code inside the load() method to create new objects of that class, using the setter methods to set values for the attributes.
+```
+    $product = new Product;
+    $product->setName('Product Three');
+    $product->setDescription('This is the third product.');
+    $product->setSize(300);
+
+    $manager->persist($product);
+
+    $manager->flush();
+```
+Repeat the first chunk and the persist method to create the objects, and then the flush method to write it all to the database.
+
+Run this using
+```
+bin/console doctrine:fixtures:load
+```
+
+```
 bin/console dbal:run-sql "SELECT * FROM product"
+```
+
+
+
+Now we have a database table, let's try retrieving data.
+
+
