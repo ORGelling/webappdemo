@@ -16,8 +16,9 @@ symfony new [name]
 start server:
 symfony serve 
 
-> index.php is the default file. Located in public folder, with all other files accessible from a webbrowser.
-> index.php is a front controller and controls all access to all other files in the rest of the framework. Does not need to be changed.
+index.php is the default file. Located in public folder, with all other files accessible from a webbrowser.
+
+index.php is a front controller and controls all access to all other files in the rest of the framework. Does not need to be changed.
 
 src source folder holds all php code.
 
@@ -59,19 +60,20 @@ class HomeController extends AbstractController
 return $this->render('home/index.html.twig');
 #Creates exactly what was created above.
 
-#twig allows template inheritance 
-#extend base.html.twig template. Use twig blocks!
+twig allows template inheritance 
+
+extend base.html.twig template. Use twig blocks!
 {% extends 'base.html.twig' %}
 
-#symfony can create these with the maker bundle:
+symfony can create these with the maker bundle:
 composer require --dev symfony/maker-bundle
 
-#Recipes and aliases make installing these simpler
+Recipes and aliases make installing these simpler
 composer require maker --dev
 
-#run this to see available commands
-php bin/console
-php bin/console list
+run this to see available commands
+<pre>php bin/console
+php bin/console list</pre>
 #may not need to write "php " here 
 
 bin/console help make:controller 
