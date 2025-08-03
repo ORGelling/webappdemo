@@ -1,10 +1,16 @@
-#common commands
+## This is my own summary of a tutorial I have been following along with, to keep handy when needed and to help me memorise and understand the uses of symfony and the framework it generates and supports.
+
+#
+
+## SETUP AND BASICS
+
+# common commands:
 symfony 
-#check requirements
+# check requirements:
 symfony check:req 
-#new app
+# new app:
 symfony new [name] 
-#start server
+# start server:
 symfony serve 
 
 # index.php is the default file. Located in public folder, with all other files accessible from a webbrowser.
@@ -40,8 +46,9 @@ class HomeController extends AbstractController
     }
 }
 
-# Shorter way: Render method
+# Symfony shorthand: Render method
 return $this->render('home/index.html.twig');
+# Creates exactly what was created above.
 
 # twig allows template inheritance 
 # extend base.html.twig template. Use twig blocks!
@@ -58,9 +65,11 @@ php bin/console
 php bin/console list
 # may not need to write "php " here 
 
-bin/console help make:controller # shows options and usage
+bin/console help make:controller 
+# shows options and usage
 
-bin/console make:controller Product # To generate controller called "Product". Will ask if no name given. Name gets suffixed with "Controller"
+bin/console make:controller Product 
+# To generate controller called "Product". Will ask if no name given. Name gets suffixed with "Controller"
 
 # This has namespaces, AbstractController class, and includes an index method with a Route.
 
@@ -69,7 +78,32 @@ bin/console make:controller Product # To generate controller called "Product". W
 
 # A template was generated inside the templates/product folder, "index.html.twig". Look at {{ controller_name }}!
 
+# Add anchor tags to home/index.html.twig like so:
+<a href = "{{ path('product_index') }}">Products</a>
 
+# The link now shows up on the home page. 
+# Absolute url can be made with:
+<a href = "{{ url('product_index') }}">Products</a>
+
+# There are many more options here in the documentation
+# Using Route name makes the code more pliable.
+
+# Currently defined Routes can be found with:
+bin/console debug:router
+
+#
+
+## DATABASES
+
+composer require symfony/orm-pack
+
+# Docker config for running in isolated container. Not necessary here.
+# .env file contains configuration options. Select your database type by un-commenting the right kind of DATABASE_URL. Postgresql is default. I have used sqlite but mysql is also possible.
+# configure the file name. %[stuff]% is the project folder, default file name is data.db. Pick something fitting.
+
+bin/console list 
+# now shows new doctrine commands
+# The file [name].db should now be automatically have been created in the var folder. 
 
 
 
