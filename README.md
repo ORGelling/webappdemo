@@ -6,35 +6,43 @@
 
 ### common commands:
 symfony 
-#check requirements:
+
+check requirements:
 symfony check:req 
-#new app:
+
+new app:
 symfony new [name] 
-#start server:
+
+start server:
 symfony serve 
 
-#index.php is the default file. Located in public folder, with all other files accessible from a webbrowser.
-#index.php is a front controller and controls all access to all other files in the rest of the framework. Does not need to be changed.
+index.php is the default file. Located in public folder, with all other files accessible from a webbrowser.
+index.php is a front controller and controls all access to all other files in the rest of the framework. Does not need to be changed.
 
-#src source folder holds all php code.
-#controller folder: create new file called HomeController. Define HomeController class with "public method" index()
+src source folder holds all php code.
+controller folder: create new file called HomeController. Define HomeController class with "public method" index()
 
-#define a Route to enable the framework to run the index method
-#best way to do this is to use php attributes
-#add a use statement above the class to import it into the current namespace.
-#Controller action method needs to return a Response class.
-#add use statement for Response class and return type declaration for the index() method.
+define a Route to enable the framework to run the index method. The best way to do this is to use php attributes. 
 
-#symfony flex modifies composer behaviour to allow for executing additional commands after installation
+Add a use statement above the class to import it into the current namespace. 
 
-#HTML content to be output goes in separate files called templates, which can be created with twig library
+Controller action method needs to return a Response class. Add use statement for Response class and return type declaration for the index() method.
+
+symfony flex modifies composer behaviour to allow for executing additional commands after installation
+
+HTML content to be output goes in separate files called templates, which can be created with twig library
+
 composer require symfony/twig-bundle
-#this also creates a templates folder
-#use directories to match controller name (like home) and files to match method name (index). 
-#suffix: .html.twig
 
-#Load and output template: extend a base class
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+this also creates a templates folder
+
+use directories to match controller name (like home) and files to match method name (index). 
+
+suffix: .html.twig
+
+Load and output template: extend a base class
+
+<pre>use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 (...)
 class HomeController extends AbstractController
 {
@@ -44,9 +52,9 @@ class HomeController extends AbstractController
         $contents = $this->renderView('home/index.html.twig');
         return new Response($contents);
     }
-}
+}</pre>
 
-#Symfony shorthand: Render method
+> Symfony shorthand: Render method
 return $this->render('home/index.html.twig');
 #Creates exactly what was created above.
 
@@ -106,7 +114,12 @@ bin/console list
 #The file [name].db should now be automatically have been created in the var folder. 
 #other dbms's will create the database inside said server.
 
-# Adding tables to database
+### Adding tables to database
+sqlite has DB browser tool, mysql has phpmyadmin, etc
+
+Symfony can do this directly. 
+
+We create an entity class. Installing doctrine creates an Entity folder inside the src folder. Entity classes are stored here. A repository folder is also made
 
 
 
