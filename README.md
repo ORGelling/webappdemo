@@ -74,7 +74,7 @@ composer require maker --dev
 run this to see available commands
 <pre>php bin/console
 php bin/console list</pre>
-#may not need to write "php " here 
+may not need to write "php " here 
 
 bin/console help make:controller 
 #shows options and usage
@@ -90,11 +90,11 @@ bin/console make:controller Product
 #A template was generated inside the templates/product folder, "index.html.twig". Look at {{ controller_name }}!
 
 #Add anchor tags to home/index.html.twig like so:
-<a href = "{{ path('product_index') }}">Products</a>
+<pre><a href = "{{ path('product_index') }}">Products</a></pre>
 
 #The link now shows up on the home page. 
 #Absolute url can be made with:
-<a href = "{{ url('product_index') }}">Products</a>
+<pre><a href = "{{ url('product_index') }}">Products</a></pre>
 
 #There are many more options here in the documentation
 #Using Route name makes the code more pliable.
