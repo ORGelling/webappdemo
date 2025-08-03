@@ -8,14 +8,19 @@
 symfony 
 
 check requirements:
+```
 symfony check:req 
+```
 
 new app:
+```
 symfony new [name] 
+```
 
 start server:
+```
 symfony serve 
-
+```
 index.php is the default file. Located in public folder, with all other files accessible from a webbrowser.
 
 index.php is a front controller and controls all access to all other files in the rest of the framework. Does not need to be changed.
@@ -125,6 +130,8 @@ bin/console list
 sqlite has DB browser tool, mysql has phpmyadmin, etc
 
 Symfony can do this directly. 
+```
+
 
 We create an entity class. Installing doctrine creates an Entity folder inside the src folder. Entity classes are stored here. A repository folder is also made
 
