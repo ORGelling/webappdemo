@@ -16,10 +16,11 @@ symfony new [name]
 start server:
 symfony serve 
 
-index.php is the default file. Located in public folder, with all other files accessible from a webbrowser.
-index.php is a front controller and controls all access to all other files in the rest of the framework. Does not need to be changed.
+> index.php is the default file. Located in public folder, with all other files accessible from a webbrowser.
+> index.php is a front controller and controls all access to all other files in the rest of the framework. Does not need to be changed.
 
 src source folder holds all php code.
+
 controller folder: create new file called HomeController. Define HomeController class with "public method" index()
 
 define a Route to enable the framework to run the index method. The best way to do this is to use php attributes. 
