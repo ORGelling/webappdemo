@@ -6,6 +6,16 @@
 
 <h1>Products</h1>
 
+<a href="{{ path('product_new') }}">Create New Product</a>
+
+{% if products is not empty %}
+    <h2>Product List</h2>
+{% else %}
+    <p>No products found.</p>
+{% endif %}
+
+{% if products is defined %}
+
 <table>
     <thead>
         <tr>
@@ -17,13 +27,19 @@
     <tbody>
         {% for product in products %}
         <tr>
-            <td>{{ product.name }}</td>
+            <td>
+                <a href="{{ path('product_show', { 'id': product.id }) }}">
+                    {{ product.name }}
+                </a>
+            </td>
             <td>{{ product.description }}</td>
             <td>{{ product.size }}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+
+{% endif %}
 
 {#<style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }

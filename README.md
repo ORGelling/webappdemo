@@ -258,6 +258,8 @@ We will get all records with this line in ProductController.php:
 ```
 $products = $repository->findAll();
 ```
+
+### debugging
 Debugging can be done with the dump method:
 ```
 dump($products);
@@ -296,3 +298,135 @@ Copy the CDN hosted link from the simple.css github page into templates/base.htm
 <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
 ```
 Since it is in the base template it is now applied to every page.
+
+The ProductRepository class generates the SQL and runs the query for us. We can also see the SQL directly. Symfony Profiler gives us detailed info about requests.
+```
+composer require symfony/profiler-pack --dev
+```
+Now we can see a tool bar at the bottom of the product index page! Click an entry to open the Profiler proper.
+
+### Individual records
+Now we'll add code to show an individual record too. We will add another method/function to the ProductController class (Controller dir) called show(). Its Route will allow us to identify individual products using a Route variable:
+```
+#[Route('/product/{id}')]
+    public function show($id): Response
+    {
+        dd($id); // This will dump the product ID and stop execution
+    }
+```
+We want to restrict the default of the Route variable matching any string in that segment, using regular expressions.
+```
+#[Route('/product/{id}')]
+    public function show($id<\d+>): Response
+    {
+        dd($id); // This will dump the product ID and stop execution
+    }
+```
+the <\d+> restricts this to one or more digit characters.
+
+We will render a template to show the profiler toolbar. We create a file in the templates/product directory called show.html.twig, make it extend the base template, and add a basic heading inside twig code.
+
+Now we render the show template in the ProductController as such:
+```
+return $this->render('product/show.html.twig');
+```
+We expand the show template and then add a product record to the show method in the ProductController.
+
+### Pages for each id
+We add another argument to the method and then use the findOneBy method to search the repository, telling it to match the input id with data id:
+```
+$product = $repository->findOneBy(['id' => $id]);
+```
+We can check id's from the database using:
+```
+bin/console dbal:run-sql "SELECT id FROM product"
+```
+We can now simply append the url with product/1 (or 2 or 3) to go to the page of the 1st product!
+
+The database panel of the profiler shows us the SQL that is generated here to retrieve the record.
+
+Since we are using the id column we can also use the find method directly:
+```
+$product = $repository->find($id);
+```
+### 404 not found
+We want a 404 not found page to show up if an invalid product id is entered. We can use the Controller class's createNotFoundException() method to throw a 404:
+```
+if ($product === null) {
+    throw $this->createNotFoundException('Product not found');
+}
+```
+
+To see what the 404 looks like in production (and not in development) go to the .env file and change the 
+```
+APP_ENV=dev
+```
+to
+```
+APP_ENV=prod
+```
+
+### Easy 404 with type hinting
+Using type-hinting in the method argument the symfony objects will take care of 404 errors directly!
+```
+#[Route('/product/{id<\d+>}')]
+    public function show(Product $product): Response
+    {
+        return $this->render('product/show.html.twig', [
+            'product' => $product, // this array hands arguments to the render method
+        ]);
+    }
+```
+But we do need to add a use statement!
+```
+use App\Entity\Product;
+```
+
+### Linking index and show record pages
+Now we can show individual records we can add links on the index page to the show pages. 
+
+Change the Route in ProductController.php:
+```
+#[Route('/product/{id<\d+>}', name: 'product_show')]
+```
+And change the index.html.twig template by adding an anchor tag with an href where the product name was:
+```
+<a href="{{ path('product_show', { 'id': product.id }) }}">
+    {{ product.name }}
+</a>
+```
+
+### Adding a form for inserting a new record
+Create new method in the ProductController class called new
+
+add new.html.twig file to templates/product directory and give it a simple header
+
+in the index template add a link to it.
+
+Now we add a form so we can submit data. Symfony provides a form component that handles creating and processing the form.
+```
+composer require fymfony/form
+```
+We now use the maker package to run the generator to install a new controller to make and handle forms for us:
+```
+bin/console make:form
+```
+Prompts for a name, and then to bind the form to an Entity class. We can bind it to the Product entity class!
+
+We now have a ProductType.php file in the src/Form directory!
+
+Import this class with a use statement to the ProductController.
+
+Now in the new() method in the same file we add the createForm method of the Controller class to help us create a form like defined in the ProductType.php file. Then amend the new template to have the form function render it there.
+```
+{{ form(form)}}
+```
+The form entry types are automatically set by the Product class data types, but can be configured in ProductType.php. We will add a submit button.
+
+Symfony Form types include singe inputs, group inputs, and entire forms. All of these are called "Types" and are provided by the framework.
+
+### Add a Submit Type
+To ProductType.php add a use statement to import SubmitType into the namespace, and then add a type of submit button into the buildForm() method.
+```
+->add('save', SubmitType::class)
+```
