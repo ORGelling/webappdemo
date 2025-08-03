@@ -90,11 +90,13 @@ bin/console make:controller Product
 #A template was generated inside the templates/product folder, "index.html.twig". Look at {{ controller_name }}!
 
 #Add anchor tags to home/index.html.twig like so:
-<pre><a href = "{{ path('product_index') }}">Products</a></pre>
+```html
+<a href = "{{ path('product_index') }}">Products</a>```
 
 #The link now shows up on the home page. 
 #Absolute url can be made with:
-<pre><a href = "{{ url('product_index') }}">Products</a></pre>
+```html
+<a href = "{{ url('product_index') }}">Products</a>```
 
 #There are many more options here in the documentation
 #Using Route name makes the code more pliable.
