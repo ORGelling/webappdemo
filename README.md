@@ -4,7 +4,7 @@
 
 ## SETUP AND BASICS
 
-#common commands:
+### common commands:
 symfony 
 #check requirements:
 symfony check:req 
@@ -104,7 +104,9 @@ composer require symfony/orm-pack
 bin/console list 
 #now shows new doctrine commands
 #The file [name].db should now be automatically have been created in the var folder. 
+#other dbms's will create the database inside said server.
 
+# Adding tables to database
 
 
 
