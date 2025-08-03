@@ -91,12 +91,14 @@ bin/console make:controller Product
 
 #Add anchor tags to home/index.html.twig like so:
 ```html
-<a href = "{{ path('product_index') }}">Products</a>```
+<a href = "{{ path('product_index') }}">Products</a>
+```
 
 #The link now shows up on the home page. 
 #Absolute url can be made with:
 ```html
-<a href = "{{ url('product_index') }}">Products</a>```
+<a href = "{{ url('product_index') }}">Products</a>
+```
 
 #There are many more options here in the documentation
 #Using Route name makes the code more pliable.
