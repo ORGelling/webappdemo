@@ -1,6 +1,10 @@
-##This is my own summary of a tutorial I have been following along with, to keep handy when needed and to help me memorise and understand the uses of symfony and the framework it generates and supports.
+# Practicing with Symfony
 
-#
+This is a webapp I am using as a learning project for the Symfony tool package.
+
+# Summary
+
+Here follows my own summary of a tutorial I have been following along with, to keep handy when needed and to help me memorise and understand the uses of symfony and the framework it generates and supports.
 
 ## SETUP AND BASICS
 
@@ -21,6 +25,7 @@ start server:
 ```
 symfony serve 
 ```
+### Setup and general structure
 index.php is the default file. Located in public folder, with all other files accessible from a webbrowser.
 
 index.php is a front controller and controls all access to all other files in the rest of the framework. Does not need to be changed.
@@ -121,7 +126,6 @@ Currently defined Routes can be found with:
 ```
 bin/console debug:router
 ```
-#
 
 ## DATABASES
 
@@ -213,17 +217,82 @@ Then add code inside the load() method to create new objects of that class, usin
 ```
 Repeat the first chunk and the persist method to create the objects, and then the flush method to write it all to the database.
 
-Run this using
+Run this using (needs confirmation)
 ```
-bin/console doctrine:fixtures:load
+bin/console doctrine:fixtures:load #--append
 ```
+This removes all data from every table. The --append flag prevents this.
 
+Check the new data using direct console query:
 ```
 bin/console dbal:run-sql "SELECT * FROM product"
 ```
+> enclose the SQL string in quotes.
 
+### Displaying data in the browser.
+in the index() method in ProductController.php we are currently only rendering a template. We need to retrieve some data. In a plain php app this would be done by connecting to db and executing some SQL. Symfony has tools for this though!
 
+When the product Entity class was generated a ProductRepository class was also generated in the src/Repository folder. ProductRepository extends the doctrine ServiceEntityRepository class, which provides functionality.
 
-Now we have a database table, let's try retrieving data.
+in ProductController.php we add another use statement.
+```
+use App\Repository\ProductRepository;
+```
+then in the index method we create an object of the class, which needs arguments.
+```
+$repository = new ProductRepository;
+```
+Use Service Containers to find the argument. Services are objects that help managing a website. We need access to a Repository object. We can use the Service Container to create objects that we need in our app.
 
+In a controller we can ask the container to return an object of the class we want by type-hinting an argument with the service name or object class.
 
+So we add an argument to the index() method with a type declaration of the Repository class:
+```
+public function index(ProductRepository $repository): Response
+```
+This is type-hinting, and it causes the Service Container to output the correct ProductRepository instance. Dependencies on other objects are also automatically resolved.
+
+The Repository object is the thing that retrieves data from the table in the db. It has several methods for this. finding individual records based on ID, finding one based on the value of a column, or getting all the records.
+
+We will get all records with this line in ProductController.php:
+```
+$products = $repository->findAll();
+```
+Debugging can be done with the dump method:
+```
+dump($products);
+```
+We now pass the data directly to the template when it's being rendered.
+```
+'products' => $repository->findAll(),
+```
+This means we also need to replace the twig's body block of the code in templates/product/index.html.twig template
+```
+<h1>Products</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Size</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.name }}</td>
+            <td>{{ product.description }}</td>
+            <td>{{ product.size }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+```
+There is no styling here. One can use a classless stylesheet like simple.css to quickly add styles.
+
+Copy the CDN hosted link from the simple.css github page into templates/base.html.twig head section:
+```
+<link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+```
+Since it is in the base template it is now applied to every page.
