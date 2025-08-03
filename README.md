@@ -38,9 +38,9 @@ Controller action method needs to return a Response class. Add use statement for
 symfony flex modifies composer behaviour to allow for executing additional commands after installation
 
 HTML content to be output goes in separate files called templates, which can be created with twig library
-
+```
 composer require symfony/twig-bundle
-
+```
 this also creates a templates folder
 
 use directories to match controller name (like home) and files to match method name (index). 
@@ -62,78 +62,103 @@ class HomeController extends AbstractController
 }</pre>
 
 > Symfony shorthand: Render method
+```
 return $this->render('home/index.html.twig');
-#Creates exactly what was created above.
+```
+Creates exactly what was created above.
 
 twig allows template inheritance 
 
 extend base.html.twig template. Use twig blocks!
+```
 {% extends 'base.html.twig' %}
-
+```
 symfony can create these with the maker bundle:
+```
 composer require --dev symfony/maker-bundle
-
+```
 Recipes and aliases make installing these simpler
+```
 composer require maker --dev
-
+```
 run this to see available commands
 <pre>php bin/console
 php bin/console list</pre>
 may not need to write "php " here 
-
+```
 bin/console help make:controller 
-#shows options and usage
-
+```
+shows options and usage
+```
 bin/console make:controller Product 
-#To generate controller called "Product". Will ask if no name given. Name gets suffixed with "Controller"
+```
+To generate controller called "Product". Will ask if no name given. Name gets suffixed with "Controller"
 
-#This has namespaces, AbstractController class, and includes an index method with a Route.
+This has namespaces, AbstractController class, and includes an index method with a Route.
 
-#ProductController has a name specified in the Route, which allows more easy use of link redirecting.
-#Call to render is different. passes data to view template.
+ProductController has a name specified in the Route, which allows more easy use of link redirecting.
+Call to render is different. passes data to view template.
 
-#A template was generated inside the templates/product folder, "index.html.twig". Look at {{ controller_name }}!
+A template was generated inside the templates/product folder, "index.html.twig". Look at {{ controller_name }}!
 
-#Add anchor tags to home/index.html.twig like so:
+Add anchor tags to home/index.html.twig like so:
 ```html
 <a href = "{{ path('product_index') }}">Products</a>
 ```
 
-#The link now shows up on the home page. 
-#Absolute url can be made with:
+The link now shows up on the home page. 
+
+Absolute url can be made with:
 ```html
 <a href = "{{ url('product_index') }}">Products</a>
 ```
 
-#There are many more options here in the documentation
-#Using Route name makes the code more pliable.
+There are many more options here in the documentation
 
-#Currently defined Routes can be found with:
+Using Route name makes the code more pliable.
+
+Currently defined Routes can be found with:
+```
 bin/console debug:router
-
+```
 #
 
 ## DATABASES
 
 composer require symfony/orm-pack
 
-#Docker config for running in isolated container. Not necessary here.
-#.env file contains configuration options. Select your database type by un-commenting the right kind of DATABASE_URL. Postgresql is default. I have used sqlite but mysql is also possible.
-#configure the file name. %[stuff]% is the project folder, default file name is data.db. Pick something fitting.
+Docker config for running in isolated container. Not necessary here.
 
+.env file contains configuration options. Select your database type by un-commenting the right kind of DATABASE_URL. Postgresql is default. I have used sqlite but mysql is also possible.
+
+configure the file name. %[stuff]% is the project folder, default file name is data.db. Pick something fitting.
+```
 bin/console list 
-#now shows new doctrine commands
-#The file [name].db should now be automatically have been created in the var folder. 
-#other dbms's will create the database inside said server.
+```
+now shows new doctrine commands
+
+The file [name].db should now be automatically have been created in the var folder. 
+
+other dbms's will create the database inside said server.
 
 ### Adding tables to database
 sqlite has DB browser tool, mysql has phpmyadmin, etc
 
 Symfony can do this directly. 
-```
-
 
 We create an entity class. Installing doctrine creates an Entity folder inside the src folder. Entity classes are stored here. A repository folder is also made
+```
+bin/console make:entity product
+```
+Creates a class "product" in entity folder along with a class called "ProductRepository" in the repository folder
+
+Asks for properties of the entity class (fields)
+- name (camel case)
+- type (? for available)
+- length (number of characters it can have)
+- null (can it be null, default no)
+Add more until done, then input empty line when asks for another "property"
+
 
 
 
