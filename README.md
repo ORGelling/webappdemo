@@ -426,7 +426,10 @@ The form entry types are automatically set by the Product class data types, but 
 Symfony Form types include singe inputs, group inputs, and entire forms. All of these are called "Types" and are provided by the framework.
 
 ### Add a Submit Type
-To ProductType.php add a use statement to import SubmitType into the namespace, and then add a type of submit button into the buildForm() method.
+To ProductType.php add a use statement to import SubmitType into the namespace, and then add a type of submit button into the buildForm() method. 
 ```
 ->add('save', SubmitType::class)
 ```
+We now have a submit button, there are different options for this type! We can change the label by specifying an array as additional argument to the add method
+
+You can also render parts of forms. Form Functions are listed in the documentation.

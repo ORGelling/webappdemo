@@ -16,7 +16,7 @@ class ProductType extends AbstractType
             ->add('name')
             ->add('description')
             ->add('size')
-            ->add('save', SubmitType::class)
+            ->add('save', SubmitType::class, ['label' => 'Create New Product']) // Add a submit button
         ;
     }
 
